@@ -40,7 +40,7 @@ First name: Decrypt this password -> then lower all the char. Sh256 on it and it
 Surname : 5ff9d0165b4f92b14994e5c685cdce28
 ```
 
-Let's fllow the instructions:
+Let's follow the instructions:
  - Trying to decode `5ff9d0165b4f92b14994e5c685cdce28` we find that it's MD5 and decrypted we get `FortyTwo`
  - Lower all the chars -> `fortytwo`
  - SH256 on it -> `10a16d834f9b1e4068b25c4c46fe0284e99e44dceaf08098fc83925ba6310ff5`
