@@ -7,3 +7,10 @@ Looking around the HTML, some element appear to be hidden :
 So we un-hide them, change the maxlength and set the password recovery adress as our own and we find our next flag !
 
 // here screenshot
+
+To remediate this vulnerability, the application should:
+ - Implement proper server-side verification of user identity and access rights
+ - Never rely on hidden form fields for access control or security purposes
+ - Use session-based authentication to verify that users can only access their own accounts
+ - Apply the principle of least privilege for all user accounts and functions
+ - Implement robust authorization checks on every request that accesses sensitive data

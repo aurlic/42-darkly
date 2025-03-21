@@ -36,4 +36,5 @@ $> diff base_access nsa_access2
 
 ```
 
-If we wanted to fix this breach, we would probably just remove the comments indicating how to exploit it.
+To remediate this vulnerability, the application should:
+ - probably just remove the comments indicating how to exploit it (that would be a good start...)

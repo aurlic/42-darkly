@@ -45,4 +45,10 @@ Let's fllow the instructions:
  - Lower all the chars -> `fortytwo`
  - SH256 on it -> `10a16d834f9b1e4068b25c4c46fe0284e99e44dceaf08098fc83925ba6310ff5`
 
- Here is our flag !
+Here is our flag !
+
+To remediate this vulnerability, the application should:
+ - Use parameterized queries or prepared statements instead of directly concatenating user input into SQL queries
+ - Implement input validation to reject suspicious inputs containing SQL syntax
+ - Apply the principle of least privilege by using a database user with only the necessary permissions
+ - Implement proper error handling that doesn't expose database details to users
