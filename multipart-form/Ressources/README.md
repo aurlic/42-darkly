@@ -7,3 +7,8 @@ Using curl:
 `curl -X POST -F "uploaded=@test.php;type=image/jpeg" -F "Upload=Upload" "http://localhost:8080/index.php?page=upload" > page`
 
 We get our next flag !
+
+To remediate this vulnerability, the application should:
+ - Implement server-side file type validation instead of relying solely on MIME type or extension checks
+ - Verify file contents by analyzing file signatures/magic bytes rather than trusting user-provided content types
+ - Use a whitelist approach for allowed file extensions and content types
