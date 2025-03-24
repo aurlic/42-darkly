@@ -1,56 +1,61 @@
 use reqwest::blocking::Client;
-use scraper::{Html, Selector};
+use scraper::Selector;
 use std::collections::HashSet;
+use std::fs;
+use std::io::Write;
+use std::process::exit;
 
 fn main() {
-    let base_url = "http://localhost:8080/.hidden/";
-    let client = Client::new();
+    let url = "http://localhost:8080/.hidden/";
     let mut visited = HashSet::new();
+    let client = Client::new();
+    extract_recursive(url, &client, &mut visited);
+}
 
-    if let Some(flag_path) = scrape(&client, base_url, &mut visited) {
-        println!("[+] Flag found in: {}", flag_path);
-    } else {
-        println!("[-] No flag found.");
+fn extract_recursive(url: &str, client: &Client, visited: &mut HashSet<String>) {
+    if visited.contains(&url.to_string()) {
+        return;
+    }
+    visited.insert(url.to_string());
+    let mut links = Vec::new();
+    if let Ok(res) = client.get(url).send() {
+        let res_txt = res.text().unwrap();
+        links = extract_links(url, client, &res_txt);
+    }
+    for link in links {
+        extract_recursive(&link, client, visited);
     }
 }
 
-fn scrape(client: &Client, url: &str, visited: &mut HashSet<String>) -> Option<String> {
-    if !visited.insert(url.to_string()) {
-        return None;
-    }
+fn get_full_url(base_url: &str, link_url: &str) -> String {
+    format!("{}{}", base_url, link_url)
+}
 
-    let response = client.get(url).send().ok()?;
-    let body = response.text().ok()?;
-    let document = Html::parse_document(&body);
+fn extract_links(url: &str, client: &Client, response: &str) -> Vec<String> {
+    let mut links: Vec<String> = Vec::new();
+    let doc = scraper::Html::parse_document(response);
     let selector = Selector::parse("a").unwrap();
 
-    for element in document.select(&selector) {
-        if let Some(href) = element.value().attr("href") {
-            if href == "../" {
+    for el in doc.select(&selector) {
+        if let Some(link) = el.value().attr("href") {
+            if link == "../" {
                 continue;
-            }
-            let new_url = format!("{}{}", url, href);
-
-            if href == "README" {
-                if let Some(flag) = check_readme_content(client, &new_url) {
-                    return Some(flag);
+            } else if link == "README" {
+                let full_link = format!("{url}README");
+                if let Ok(res) = client.get(&full_link).send() {
+                    if let Ok(res) = res.text() {
+                        if res.contains("flag") {
+                            let mut file = fs::File::create("README").expect("Error README");
+                            file.write_all(&res.as_bytes()).expect("Fail to write");
+                            println!("Path = {}", full_link);
+                            exit(0);
+                        }
+                    }
                 }
-            } else {
-                if let Some(flag) = scrape(client, &new_url, visited) {
-                    return Some(flag);
-                }
             }
+            let full_url = get_full_url(url, &link);
+            links.push(full_url.to_string());
         }
     }
-    None
-}
-
-fn check_readme_content(client: &Client, url: &str) -> Option<String> {
-    let response = client.get(url).send().ok()?;
-    let content = response.text().ok()?;
-
-    if content.contains("flag") {
-        return Some(url.to_string());
-    }
-    None
+    links
 }
