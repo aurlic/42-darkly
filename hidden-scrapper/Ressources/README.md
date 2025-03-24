@@ -6,7 +6,7 @@ Let's run a scrapper through these files to see if we can find anything useful:
 
 `cargo run`
 
-Our scrapper gives us the link of the readme containing the flag: `[+] Flag found in: http://localhost:8080/.hidden/whtccjokayshttvxycsvykxcfm/igeemtxnvexvxezqwntmzjltkt/lmpanswobhwcozdqixbowvbrhw/README`
+Our scrapper gives us the link of the README containing the flag and downloads it: `[+] Flag found in: http://localhost:8080/.hidden/whtccjokayshttvxycsvykxcfm/igeemtxnvexvxezqwntmzjltkt/lmpanswobhwcozdqixbowvbrhw/README`
 
 To remediate this vulnerability, the application should:
  - Avoid storing sensitive information in hidden directories that can be discovered through simple enumeration
