@@ -9,4 +9,4 @@ And find that the password is `shadow`.
 We log in using `admin` `shadow` and get our next flag.
 
 To remediate this vulnerability, the application should:
-	- Implement a stronger password policy
+ - Implement a stronger password policy
