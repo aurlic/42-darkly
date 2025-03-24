@@ -10,3 +10,9 @@ Let's try decrypting the password with MD5:
 Now that we got a password let's go to `http://localhost:8080/admin/` and log in with the previously found informations.
 
 And just like this we get our next flag !
+
+To remediate this vulnerability, the application should:
+ - Remove sensitive directories and files from robots.txt, as it should never be used as a security control
+ - Implement proper authentication and authorization for all sensitive resources
+ - Move sensitive files to areas not accessible from the web server
+ - Use proper access controls instead of "security through obscurity"
